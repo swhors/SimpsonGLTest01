@@ -3,18 +3,26 @@ package com.simpson.simpsongltest01
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
-import java.util.logging.Logger
+import com.simpson.simpsongltest01.shape.Circle
+import com.simpson.simpsongltest01.shape.QuadV1
+import com.simpson.simpsongltest01.shape.QuadV2
+import com.simpson.simpsongltest01.shape.Triangle
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.concurrent.Volatile
 
 class MyGLRenderer : GLSurfaceView.Renderer {
     private lateinit var mTriangle: Triangle
+    private lateinit var mQuadV1: QuadV1
+    private lateinit var mQuadV2: QuadV2
+    private lateinit var mCircle: Circle
 
     private var mMVPMatrix = FloatArray(16)
     private var mProjectionMatrix = FloatArray(16)
     private var mViewMatrix = FloatArray(16)
     private var mRotationMatrix = FloatArray(16)
+
+    private var shapeType: Int = 1
 
     @Volatile
     var mAngle: Float = 0f
@@ -24,7 +32,10 @@ class MyGLRenderer : GLSurfaceView.Renderer {
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         mTriangle = Triangle()
-//        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
+        mQuadV1 = QuadV1()
+        mQuadV2 = QuadV2()
+        mCircle = Circle()
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -38,14 +49,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     }
 
     fun changeView(viewType: Int) {
-        when(viewType) {
-            0 -> {
-
-            }
-            1 -> {
-
-            }
-        }
+        this.shapeType = viewType
     }
 
 
@@ -62,43 +66,23 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         // projection matrix와 camera view matrix를 곱하여 mMVPMatrix 변수에 저장
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0)
 
-//        var scratch = FloatArray(16)
-//        var mRotationMatrix = FloatArray(16)
-
         //mAngle 각도값을 이용하여 (x,y,z)=(0,0,-1) 축 주위를 회전하는 회전 matrix를 정의합니다.
-
-        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0.0f, 0.0f, -1.0f);
+        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0.0f, 0.0f, -1.0f)
 
         //projection matrix와 camera view matrix를 곱하여 얻은 matrix인 mMVPMatrix와
         //회전 matrix mRotationMatrix를 결합합니다.
-        Matrix.multiplyMM(mMVPMatrix, 0, mRotationMatrix, 0, mMVPMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mRotationMatrix, 0, mMVPMatrix, 0)
 
         //triangle를 그리는 처리를 하고 있는 draw메소드에 scratch 변수를 넘겨준다.
-
-        mTriangle.draw(mMVPMatrix)
+        when(this.shapeType) {
+            1 -> mTriangle.draw(mMVPMatrix)
+            2 -> mQuadV1.draw(mMVPMatrix)
+            3 -> mCircle.draw(mMVPMatrix)
+            4 -> mQuadV2.draw(mMVPMatrix)
+        }
     }
 
-    companion object {
-        fun loadShader(type: Int, shaderCode: String): Int{
-            // 다음 2가지 타입 중 하나로 shader객체를 생성한다.
-            // vertex shader type (GLES20.GL_VERTEX_SHADER)
-            // 또는 fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-            val shader = GLES20.glCreateShader(type)
-            // shader객체에 shader source code를 로드합니다.
-            GLES20.glShaderSource(shader, shaderCode)
-            //shader객체를 컴파일 합니다.
-            GLES20.glCompileShader(shader)
+    fun resetAllShapePosition() {
 
-            return shader
-        }
-        fun checkGlError(glOperation: String) {
-            var error: Int = GLES20.glGetError()
-
-            while (error != GLES20.GL_NO_ERROR) {
-                Logger.getLogger("MyGLRenderer").info("$glOperation glError=$error")
-                throw RuntimeException("$glOperation : glError = $error")
-                error = GLES20.glGetError()
-            }
-        }
     }
 }
