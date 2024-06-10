@@ -36,7 +36,12 @@ class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
         return true
     }
 
-    fun changeView(viewType: Int) {
+    fun changeShape(viewType: Int) {
         this.renderer.changeView(viewType)
+        requestRender()
+    }
+
+    fun resetAllShapePosition() {
+        renderer.resetAllShapePosition()
     }
 }

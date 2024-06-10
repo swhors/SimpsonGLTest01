@@ -14,13 +14,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/okBtn"
-            android:text="@string/hi"/>
+            android:text="@string/exit"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/changeBtn"
             android:text="@string/change"/>
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/resetBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_pos" />
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/layout1"
@@ -30,4 +36,5 @@
         android:layout_height="0dp"
         android:layout_weight="1">
     </RelativeLayout>
+
 </LinearLayout>
