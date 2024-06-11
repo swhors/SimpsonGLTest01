@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.main)
 
         findViewById<Button>(R.id.changeBtn).setOnClickListener{
-            if(++currentGlView == 5)
+            if(++currentGlView == 6)
                 currentGlView = 1
             changeGLView(currentGlView)
         }
@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
         findViewById<Button>(R.id.resetBtn).setOnClickListener{
             glView.resetAllShapePosition()
         }
-
 
         val layout1 = findViewById<RelativeLayout>(R.id.layout1)
         layout1.addView(this.glView)

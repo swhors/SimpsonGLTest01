@@ -16,7 +16,12 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
 
     private var vertexStride = 0 // COORDS_PER_VERTEX * 4
 
-    lateinit var color: FloatArray
+    var mColors: Array<FloatArray> = emptyArray()
+        get() = field
+        set(value) {
+            field = value
+        }
+
 
     enum class ShapeType(val value: Int) {
         None(0),
@@ -24,7 +29,7 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
         QuadV1(2),
         QuadV2(3),
         Circle(4),
-        Cubic(5)
+        Cube(5)
     }
 
     init {
@@ -43,7 +48,7 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
 
     private fun getProgramHandle() = this.mProgram
 
-    private fun drawFirst(color: FloatArray, mvpMatrix: FloatArray) {
+    private fun drawFirst(mvpMatrix: FloatArray): Int {
         GLES20.glUseProgram(mProgram)
 
         // set position
@@ -55,26 +60,27 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
             coordsPerVertex = coordsPerVertex
         )
 
-        // 색상 설정
-        ShapeOpenGLUtil.setColor(this.mProgram, color)
-
         // Apply the projection and view transformation
         val mMVPMatrixHandle = GLES20.glGetUniformLocation(getProgramHandle(), "uMVPMatrix")
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0)
+
+        return GLES20.glGetUniformLocation(getProgramHandle(), "vColor")
     }
 
     private fun drawEnd() {
         GLES20.glDisableVertexAttribArray(mPositionHandle)
     }
 
-    internal abstract fun drawCustom(vertexCount: Int)
+    internal abstract fun drawCustom(vertexCount: Int, cnt: Int)
 
     fun draw(mvpMatrix: FloatArray) {
-        drawFirst(color = color, mvpMatrix = mvpMatrix)
-
-        drawCustom(this.vertexCount)
-
+        val colorHandle = drawFirst(mvpMatrix = mvpMatrix)
+        var cnt = 0;
+        // 색상 설정
+        mColors.forEach {
+            GLES20.glUniform4fv(colorHandle, 1, it, 0)
+            drawCustom(this.vertexCount, cnt++)
+        }
         drawEnd()
     }
-
 }

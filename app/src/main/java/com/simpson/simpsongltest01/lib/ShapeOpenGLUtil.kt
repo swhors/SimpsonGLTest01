@@ -29,14 +29,7 @@ class ShapeOpenGLUtil {
                 vertexBuffer)
             return mPositionHandle
         }
-        fun setColor(proramHandle: Int, color: FloatArray) {
-            // program 객체로 부터 fragment shader의 vColor 멤버에 대한 핸들을 가져옴
-            val mColorHandle = GLES20.glGetUniformLocation(proramHandle, "vColor")
-            Logger.getLogger("Triangle").info("mColorHandle = $mColorHandle")
 
-            //triangle 렌더링 시 사용할 색으로 color 변수에 정의한 값을 사용 한다.
-            GLES20.glUniform4fv(mColorHandle, 1, color, 0)
-        }
         private fun allocateBuffer(coords: FloatArray): FloatBuffer {
             val bb = ByteBuffer.allocateDirect(coords.size * 4)
             bb.order(ByteOrder.nativeOrder())
@@ -88,8 +81,43 @@ class ShapeOpenGLUtil {
                         0.5f, -0.5f, // 2
                         0.5f, 0.5f) // 3
                 }
-                ShapeBase.ShapeType.Cubic -> {
-                    null
+                ShapeBase.ShapeType.Cube -> {
+                    floatArrayOf( // Vertices of the 6 faces
+                        // FRONT
+                        -0.0f, -1.0f, 1.0f,  // 0. left-bottom-front
+                        0.0f, -1.0f, 1.0f,  // 1. right-bottom-front
+                        -0.0f, 0.0f, 1.0f,  // 2. left-top-front
+                        0.0f, 0.0f, 1.0f,  // 3. right-top-front
+//                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
+//                        1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
+//                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
+//                        1.0f, 1.0f, 1.0f,  // 3. right-top-front
+                        // BACK
+                        1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
+                        -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
+                        1.0f, 1.0f, -1.0f,  // 7. right-top-back
+                        -1.0f, 1.0f, -1.0f,  // 5. left-top-back
+                        // LEFT
+                        -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
+                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
+                        -1.0f, 1.0f, -1.0f,  // 5. left-top-back
+                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
+                        // RIGHT
+                        1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
+                        1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
+                        1.0f, 1.0f, 1.0f,  // 3. right-top-front
+                        1.0f, 1.0f, -1.0f,  // 7. right-top-back
+                        // TOP
+                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
+                        1.0f, 1.0f, 1.0f,  // 3. right-top-front
+                        -1.0f, 1.0f, -1.0f,  // 5. left-top-back
+                        1.0f, 1.0f, -1.0f,  // 7. right-top-back
+                        // BOTTOM
+                        -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
+                        1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
+                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
+                        1.0f, -1.0f, 1.0f // 1. right-bottom-front
+                    )
                 }
                 ShapeBase.ShapeType.Circle -> {
                     val coords = FloatArray(364 * 3)

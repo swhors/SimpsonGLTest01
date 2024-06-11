@@ -4,6 +4,7 @@ import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import com.simpson.simpsongltest01.shape.Circle
+import com.simpson.simpsongltest01.shape.Cube
 import com.simpson.simpsongltest01.shape.QuadV1
 import com.simpson.simpsongltest01.shape.QuadV2
 import com.simpson.simpsongltest01.shape.Triangle
@@ -16,6 +17,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     private lateinit var mQuadV1: QuadV1
     private lateinit var mQuadV2: QuadV2
     private lateinit var mCircle: Circle
+    private lateinit var mCube: Cube
 
     private var mMVPMatrix = FloatArray(16)
     private var mProjectionMatrix = FloatArray(16)
@@ -35,6 +37,8 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         mQuadV1 = QuadV1()
         mQuadV2 = QuadV2()
         mCircle = Circle()
+        mCube = Cube()
+
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
     }
 
@@ -79,6 +83,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
             2 -> mQuadV1.draw(mMVPMatrix)
             3 -> mCircle.draw(mMVPMatrix)
             4 -> mQuadV2.draw(mMVPMatrix)
+            5 -> mCube.draw(mMVPMatrix)
         }
     }
 
