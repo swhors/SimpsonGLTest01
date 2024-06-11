@@ -5,6 +5,7 @@ import com.simpson.simpsongltest01.lib.ShapeOpenGLUtil
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.IntBuffer
+import java.util.logging.Logger
 
 class QuadV1: ShapeBase(shapeType = ShapeType.QuadV1, coordsPerVertex = 2, mulValue = 4, renderMode = GLES20.GL_TRIANGLE_FAN) {
     private val vertexShaderCode =
@@ -33,6 +34,9 @@ class QuadV1: ShapeBase(shapeType = ShapeType.QuadV1, coordsPerVertex = 2, mulVa
         super.initProgram(vertexShaderCode, fragmentShaderCode)
         super.mColors = arrayOf(floatArrayOf(0.63671875f, 0.76953125f, 0.22265625f, 1.0f))
         orderStepByColor = orderByte.capacity() / mColors.size
+    }
+
+    override fun customInitProgram(mProgram: Int) {
     }
 
     override fun drawCustom(vertexCount: Int, cnt: Int) {

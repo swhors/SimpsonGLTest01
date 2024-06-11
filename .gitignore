@@ -28,3 +28,6 @@ replay_pid*
 
 # grable
 .gradle/
+
+# local setting
+local.properties

@@ -21,6 +21,9 @@ class Triangle: ShapeBase(shapeType = ShapeType.Triangle, coordsPerVertex = 3, m
         super.mColors = arrayOf(floatArrayOf(0.63671875f, 0.76953125f, 0.22265625f, 1.0f))
     }
 
+    override fun customInitProgram(mProgram: Int) {
+    }
+
     override fun drawCustom(vertexCount: Int, cnt: Int) {
         //vertex 갯수만큼 tiangle을 렌더링한다.
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount)

@@ -29,7 +29,8 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
         QuadV1(2),
         QuadV2(3),
         Circle(4),
-        Cube(5)
+        Cube(5),
+        CubeN(6)
     }
 
     init {
@@ -46,7 +47,9 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
         this.mProgram = ShapeOpenGLUtil.initProgram(vertexShaderCode, fragmentShaderCode)
     }
 
-    private fun getProgramHandle() = this.mProgram
+    abstract fun customInitProgram(mProgram: Int)
+
+    fun getProgramHandle() = this.mProgram
 
     private fun drawFirst(mvpMatrix: FloatArray): Int {
         GLES20.glUseProgram(mProgram)

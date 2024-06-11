@@ -3,20 +3,25 @@ package com.simpson.simpsongltest01
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
+import android.os.SystemClock
 import com.simpson.simpsongltest01.shape.Circle
 import com.simpson.simpsongltest01.shape.Cube
+import com.simpson.simpsongltest01.shape.CubeN
 import com.simpson.simpsongltest01.shape.QuadV1
 import com.simpson.simpsongltest01.shape.QuadV2
 import com.simpson.simpsongltest01.shape.Triangle
+import java.util.concurrent.TimeUnit
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.concurrent.Volatile
+
 
 class MyGLRenderer : GLSurfaceView.Renderer {
     private lateinit var mTriangle: Triangle
     private lateinit var mQuadV1: QuadV1
     private lateinit var mQuadV2: QuadV2
     private lateinit var mCircle: Circle
+    private lateinit var mCubeN: CubeN
     private lateinit var mCube: Cube
 
     private var mMVPMatrix = FloatArray(16)
@@ -25,6 +30,9 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     private var mRotationMatrix = FloatArray(16)
 
     private var shapeType: Int = 1
+
+    private var mCubeRotation = 0f
+    private var mLastUpdateMillis: Long = 0
 
     @Volatile
     var mAngle: Float = 0f
@@ -37,6 +45,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         mQuadV1 = QuadV1()
         mQuadV2 = QuadV2()
         mCircle = Circle()
+        mCubeN = CubeN()
         mCube = Cube()
 
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
@@ -83,8 +92,28 @@ class MyGLRenderer : GLSurfaceView.Renderer {
             2 -> mQuadV1.draw(mMVPMatrix)
             3 -> mCircle.draw(mMVPMatrix)
             4 -> mQuadV2.draw(mMVPMatrix)
-            5 -> mCube.draw(mMVPMatrix)
+            5 -> {
+                mCube.draw(mMVPMatrix)
+                updateCubeRotation()
+            }
         }
+    }
+
+    private val CUBE_ROTATION_INCREMENT = 0.6f
+
+    /** The refresh rate, in frames per second.  */
+    private val REFRESH_RATE_FPS = 60
+
+    /** The duration, in milliseconds, of one frame.  */
+    private val FRAME_TIME_MILLIS: Float = TimeUnit.SECONDS.toMillis(1).toFloat() / REFRESH_RATE_FPS.toFloat()
+
+    private fun updateCubeRotation() {
+        if (mLastUpdateMillis !== 0L) {
+            val factor: Float =
+                (SystemClock.elapsedRealtime() - mLastUpdateMillis) / FRAME_TIME_MILLIS
+            mCubeRotation += CUBE_ROTATION_INCREMENT * factor
+        }
+        mLastUpdateMillis = SystemClock.elapsedRealtime()
     }
 
     fun resetAllShapePosition() {

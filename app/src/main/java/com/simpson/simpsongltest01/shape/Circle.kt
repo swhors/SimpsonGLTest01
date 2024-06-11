@@ -21,6 +21,9 @@ class Circle: ShapeBase(shapeType = ShapeType.Circle, coordsPerVertex = 3, mulVa
         super.mColors = arrayOf(floatArrayOf(0.63671875f, 0.76953125f, 0.22265625f, 1.0f))
     }
 
+    override fun customInitProgram(mProgram: Int) {
+    }
+
     override fun drawCustom(vertexCount: Int, cnt: Int) {
         // Draw the triangle
         // vertexCount Muse be 364

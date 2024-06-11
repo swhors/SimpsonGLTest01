@@ -30,7 +30,7 @@ class ShapeOpenGLUtil {
             return mPositionHandle
         }
 
-        private fun allocateBuffer(coords: FloatArray): FloatBuffer {
+        fun allocFloatBuffer(coords: FloatArray): FloatBuffer {
             val bb = ByteBuffer.allocateDirect(coords.size * 4)
             bb.order(ByteOrder.nativeOrder())
             val vertexBuffer = bb.asFloatBuffer()
@@ -51,9 +51,9 @@ class ShapeOpenGLUtil {
         fun getVertexBuffer(shapeType: ShapeBase.ShapeType =ShapeBase.ShapeType.None, coords: FloatArray?) : FloatBuffer? {
             if (coords == null) {
                 val coordsLocal = if(shapeType != ShapeBase.ShapeType.None) getCoords(shapeType) else null
-                return coordsLocal?.let { allocateBuffer(it) }
+                return coordsLocal?.let { allocFloatBuffer(it) }
             } else {
-                return allocateBuffer(coords)
+                return allocFloatBuffer(coords)
             }
         }
 
@@ -82,12 +82,39 @@ class ShapeOpenGLUtil {
                         0.5f, 0.5f) // 3
                 }
                 ShapeBase.ShapeType.Cube -> {
+                    floatArrayOf(
+                        -1.0f,  1.0f, -1.0f, /* Back. */
+                        1.0f,  1.0f, -1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        1.0f, -1.0f, -1.0f,
+                        -1.0f,  1.0f,  1.0f, /* Front. */
+                        1.0f,  1.0f,  1.0f,
+                        -1.0f, -1.0f,  1.0f,
+                        1.0f, -1.0f,  1.0f,
+                        -1.0f,  1.0f, -1.0f, /* Left. */
+                        -1.0f, -1.0f, -1.0f,
+                        -1.0f, -1.0f,  1.0f,
+                        -1.0f,  1.0f,  1.0f,
+                        1.0f,  1.0f, -1.0f, /* Right. */
+                        1.0f, -1.0f, -1.0f,
+                        1.0f, -1.0f,  1.0f,
+                        1.0f,  1.0f,  1.0f,
+                        -1.0f, -1.0f, -1.0f, /* Top. */
+                        -1.0f, -1.0f,  1.0f,
+                        1.0f, -1.0f,  1.0f,
+                        1.0f, -1.0f, -1.0f,
+                        -1.0f,  1.0f, -1.0f, /* Bottom. */
+                        -1.0f,  1.0f,  1.0f,
+                        1.0f,  1.0f,  1.0f,
+                        1.0f,  1.0f, -1.0f)  // 7
+                }
+                ShapeBase.ShapeType.CubeN -> {
                     floatArrayOf( // Vertices of the 6 faces
                         // FRONT
-                        -0.0f, -1.0f, 1.0f,  // 0. left-bottom-front
-                        0.0f, -1.0f, 1.0f,  // 1. right-bottom-front
-                        -0.0f, 0.0f, 1.0f,  // 2. left-top-front
-                        0.0f, 0.0f, 1.0f,  // 3. right-top-front
+                        -0.5f, 0.5f, 0.0f,  // 0. left-bottom-front
+                        -0.5f, -0.5f, 0.0f,  // 1. right-bottom-front
+                        0.5f, -0.5f, 0.0f,  // 2. left-top-front
+                        0.5f, 0.5f, 0.0f,  // 3. right-top-front
 //                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
 //                        1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
 //                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
