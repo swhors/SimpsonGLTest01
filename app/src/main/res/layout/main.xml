@@ -11,16 +11,22 @@
         android:orientation="horizontal">
         <Button
             style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/okBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/okBtn"
             android:text="@string/exit"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/changeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/changeBtn"
             android:text="@string/change"/>
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/changeCubeViewBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cubemode"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/resetBtn"

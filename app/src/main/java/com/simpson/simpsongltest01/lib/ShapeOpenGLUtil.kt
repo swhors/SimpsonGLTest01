@@ -9,6 +9,7 @@ import java.nio.IntBuffer
 import java.util.logging.Logger
 import kotlin.math.cos
 import kotlin.math.sin
+import com.simpson.simpsongltest01.shape.ShapeType
 
 class ShapeOpenGLUtil {
     companion object {
@@ -18,7 +19,7 @@ class ShapeOpenGLUtil {
             // triangle vertex 속성을 활성화 시켜야 렌더링 시 반영 되어서 그려짐
             GLES20.glEnableVertexAttribArray(mPositionHandle)
 
-            Logger.getLogger("Triangle").info("mPositionHandle = $mPositionHandle")
+            Logger.getLogger("ShadeOpenGLUtil").info("mPositionHandle = $mPositionHandle")
 
             // triangle vertex 속성을 vertexBuffer에 저장 되어 있는 vertex 좌표들로 정의 한다.
             GLES20.glVertexAttribPointer(mPositionHandle,
@@ -48,31 +49,32 @@ class ShapeOpenGLUtil {
                 position(0)
             }
         }
-        fun getVertexBuffer(shapeType: ShapeBase.ShapeType =ShapeBase.ShapeType.None, coords: FloatArray?) : FloatBuffer? {
+        fun getVertexBuffer(shapeType: ShapeType =ShapeType.None, coords: FloatArray?) : FloatBuffer? {
+            Logger.getLogger("ShapeOpenUtl.getVertexBuffer").info("$shapeType, $coords")
             if (coords == null) {
-                val coordsLocal = if(shapeType != ShapeBase.ShapeType.None) getCoords(shapeType) else null
+                val coordsLocal = if(shapeType != ShapeType.None) getCoords(shapeType) else null
                 return coordsLocal?.let { allocFloatBuffer(it) }
             } else {
                 return allocFloatBuffer(coords)
             }
         }
 
-        private fun getCoords(shapeType: ShapeBase.ShapeType): FloatArray? {
+        private fun getCoords(shapeType: ShapeType): FloatArray? {
             return when(shapeType) {
-                ShapeBase.ShapeType.Triangle -> {
+                ShapeType.Triangle -> {
                     floatArrayOf(
                         0.0f, 0.6220085f, 0.0f,  // 0 top
                         -0.5f, -0.3110042f, 0.0f, // 1 right bottom
                         0.5f, -0.3110042f, 0.0f) // 2 left bottom
                 }
-                ShapeBase.ShapeType.QuadV1 -> {
+                ShapeType.QuadV1 -> {
                     floatArrayOf(
                         -0.5f, 0.5f, // 0 left top
                         -0.5f, -0.5f, // 1 right top
                         0.5f, -0.5f, // right bottom
                         0.5f, 0.5f) // left bottom
                 }
-                ShapeBase.ShapeType.QuadV2 -> {
+                ShapeType.QuadV2 -> {
                     floatArrayOf(
                         -0.5f, 0.5f, // 0
                         -0.5f, -0.5f, // 1
@@ -81,7 +83,7 @@ class ShapeOpenGLUtil {
                         0.5f, -0.5f, // 2
                         0.5f, 0.5f) // 3
                 }
-                ShapeBase.ShapeType.Cube -> {
+                ShapeType.Cube -> {
                     floatArrayOf(
                         -1.0f,  1.0f, -1.0f, /* Back. */
                         1.0f,  1.0f, -1.0f,
@@ -108,7 +110,7 @@ class ShapeOpenGLUtil {
                         1.0f,  1.0f,  1.0f,
                         1.0f,  1.0f, -1.0f)  // 7
                 }
-                ShapeBase.ShapeType.CubeN -> {
+                ShapeType.CubeN -> {
                     floatArrayOf( // Vertices of the 6 faces
                         // FRONT
                         -0.5f, 0.5f, 0.0f,  // 0. left-bottom-front
@@ -146,7 +148,7 @@ class ShapeOpenGLUtil {
                         1.0f, -1.0f, 1.0f // 1. right-bottom-front
                     )
                 }
-                ShapeBase.ShapeType.Circle -> {
+                ShapeType.Circle -> {
                     val coords = FloatArray(364 * 3)
                     coords[0] = 0f
                     coords[1] = 0f
@@ -176,16 +178,10 @@ class ShapeOpenGLUtil {
         }
 
         private fun loadShader(type: Int, shaderCode: String): Int{
-            // 다음 2가지 타입 중 하나로 shader객체를 생성한다.
-            // vertex shader type (GLES20.GL_VERTEX_SHADER)
-            // 또는 fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-            val shader = GLES20.glCreateShader(type)
-            // shader객체에 shader source code를 로드합니다.
-            GLES20.glShaderSource(shader, shaderCode)
-            //shader객체를 컴파일 합니다.
-            GLES20.glCompileShader(shader)
-
-            return shader
+            return GLES20.glCreateShader(type).also {
+                GLES20.glShaderSource(it, shaderCode)
+                GLES20.glCompileShader(it)
+            }
         }
 
         fun checkGlError(glOperation: String) {

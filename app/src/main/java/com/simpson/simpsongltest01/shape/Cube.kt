@@ -12,15 +12,36 @@ import java.nio.FloatBuffer
 class Cube {
 
     /** Cube vertices  */
+    /* x, y, x */
     private val VERTICES = floatArrayOf(
-        -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f
+        -0.5f, -0.5f, -0.5f, // 0
+         0.5f, -0.5f, -0.5f, // 1
+         0.5f,  0.5f, -0.5f, // 2
+        -0.5f,  0.5f, -0.5f, // 3
+        -0.5f, -0.5f,  0.5f, // 4
+         0.5f, -0.5f,  0.5f, // 5
+         0.5f,  0.5f,  0.5f, // 6
+        -0.5f,  0.5f,  0.5f  // 7
+
+//        -0.5f, -0.5f, -0.5f, // 0
+//         0.3f, -0.5f, -0.5f, // 1
+//         0.3f,  0.3f, -0.5f, // 2
+//        -0.5f,  0.3f, -0.5f, // 3
+//        -0.3f, -0.3f,  0.5f, // 4
+//        0.5f, -0.3f,  0.5f, // 5
+//        0.5f,  0.5f,  0.5f, // 6
+//        -0.3f,  0.5f,  0.5f  // 7
+
+//        -0.5f, -0.5f, 0.5f, // 0
+//        0.3f, -0.5f, 0.5f, // 1
+//        0.3f,  0.3f, 0.5f, // 2
+//        -0.5f,  0.3f, 0.5f//, // 3
+
+
+//        -0.1f, -0.1f,  0.5f, // 4
+//         0.7f, -0.1f,  0.5f, // 5
+//         0.7f,  0.7f,  0.5f, // 6
+//        -0.1f,  0.7f,  0.5f  // 7
     )
 
     /** Vertex colors.  */
@@ -87,17 +108,21 @@ class Cube {
         mVertexBuffer = ShapeOpenGLUtil.allocFloatBuffer(VERTICES)
         mColorBuffer = ShapeOpenGLUtil.allocFloatBuffer(COLORS)
 
-        mIndexBuffer = ByteBuffer.allocateDirect(INDICES.size).order(ByteOrder.nativeOrder()).apply {
-            put(INDICES)
-            position(0)
+        mIndexBuffer = ByteBuffer.allocateDirect(INDICES.size).run {
+            this.order(ByteOrder.nativeOrder())
+            apply {
+                this.put(INDICES)
+                this.position(0)
+            }
         }
 
-        mProgram = GLES20.glCreateProgram()
-        GLES20.glAttachShader(mProgram, loadShader(GLES20.GL_VERTEX_SHADER, VERTEX_SHADER_CODE))
-        GLES20.glAttachShader(
-            mProgram, loadShader(GLES20.GL_FRAGMENT_SHADER, FRAGMENT_SHADER_CODE)
-        )
-        GLES20.glLinkProgram(mProgram)
+        mProgram = GLES20.glCreateProgram().also {
+            GLES20.glAttachShader(it, loadShader(GLES20.GL_VERTEX_SHADER, VERTEX_SHADER_CODE))
+            GLES20.glAttachShader(
+                it, loadShader(GLES20.GL_FRAGMENT_SHADER, FRAGMENT_SHADER_CODE)
+            )
+            GLES20.glLinkProgram(it)
+        }
 
         mPositionHandle = glGetAttribLocation(mProgram, "vPosition")
         mColorHandle = glGetAttribLocation(mProgram, "vColor")

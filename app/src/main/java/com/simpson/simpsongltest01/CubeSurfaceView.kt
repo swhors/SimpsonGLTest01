@@ -7,7 +7,7 @@ import com.simpson.simpsongltest01.shape.ShapeBase
 import com.simpson.simpsongltest01.shape.ShapeType
 import java.util.logging.Logger
 
-class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
+class CubeSurfaceView(context: Context?) : GLSurfaceView(context) {
     var mRenderer : MyGLRenderer
 
     companion object{

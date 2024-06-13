@@ -7,7 +7,11 @@ import java.util.logging.Logger
 
 abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: Int, renderMode: Int) {
     private var mProgram: Int = 0
-    private var shapeType: ShapeType = ShapeType.None
+
+    private var mShapeType: ShapeType = ShapeType.None
+        get() = field
+        set(value: ShapeType) {field = value}
+
     private var vertexBuffer: FloatBuffer
     private var coordsPerVertex: Int = 0
     private var vertexCount = 0
@@ -22,24 +26,13 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
             field = value
         }
 
-
-    enum class ShapeType(val value: Int) {
-        None(0),
-        Triangle(1),
-        QuadV1(2),
-        QuadV2(3),
-        Circle(4),
-        Cube(5),
-        CubeN(6)
-    }
-
     init {
-        this.shapeType = shapeType
+        this.mShapeType = shapeType
         this.coordsPerVertex = coordsPerVertex
         this.vertexStride = this.coordsPerVertex * mulValue
-        this.vertexBuffer = ShapeOpenGLUtil.getVertexBuffer(this.shapeType, null)!!
+        this.vertexBuffer = ShapeOpenGLUtil.getVertexBuffer(this.mShapeType, null)!!
         vertexCount = vertexBuffer.capacity() / coordsPerVertex
-        Logger.getLogger("ShapeBase").info("$shapeType ${vertexBuffer.capacity()} $vertexCount $vertexStride")
+        Logger.getLogger("ShapeBase").info("$mShapeType ${vertexBuffer.capacity()} $vertexCount $vertexStride")
         this.renderMode = renderMode
     }
 
@@ -77,6 +70,7 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
     internal abstract fun drawCustom(vertexCount: Int, cnt: Int)
 
     fun draw(mvpMatrix: FloatArray) {
+        Logger.getLogger("ShapeBase.drawCuston").info("ShapeType = $mShapeType")
         val colorHandle = drawFirst(mvpMatrix = mvpMatrix)
         var cnt = 0;
         // 색상 설정
