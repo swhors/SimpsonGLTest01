@@ -23,10 +23,16 @@
             android:text="@string/change"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/changeCubeViewBtn"
+            android:id="@+id/changeCube1ViewBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cubemode"/>
+            android:text="@string/cube1mode"/>
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/changeCube3ViewBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cube3mode"/>
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/resetBtn"

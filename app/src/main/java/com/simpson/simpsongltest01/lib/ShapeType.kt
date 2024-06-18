@@ -1,4 +1,4 @@
-package com.simpson.simpsongltest01.shape
+package com.simpson.simpsongltest01.lib
 
 enum class ShapeType(val value: Int) {
     None(0),
@@ -7,7 +7,8 @@ enum class ShapeType(val value: Int) {
     QuadV2(3),
     Circle(4),
     Cube(5),
-    CubeN(6);
+    Cube2(6),
+    Cube3(7);
 
     companion object {
         fun intToType(intType: Int): ShapeType {
@@ -18,7 +19,8 @@ enum class ShapeType(val value: Int) {
                 3 -> QuadV2
                 4 -> Circle
                 5 -> Cube
-                6 -> CubeN
+                6 -> Cube2
+                7 -> Cube3
                 else -> None
             }
         }

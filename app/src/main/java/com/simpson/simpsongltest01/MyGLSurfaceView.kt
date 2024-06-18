@@ -3,12 +3,12 @@ package com.simpson.simpsongltest01
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.view.MotionEvent
-import com.simpson.simpsongltest01.shape.ShapeBase
-import com.simpson.simpsongltest01.shape.ShapeType
+import com.simpson.simpsongltest01.lib.ShapeType
 import java.util.logging.Logger
+import kotlin.math.abs
 
 class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
-    var mRenderer : MyGLRenderer
+    private var mRenderer : MyGLRenderer
 
     companion object{
         private const val TOUCH_SCALE_FACTOR = 180f / 320f
@@ -20,27 +20,29 @@ class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
         setEGLContextClientVersion(2)
         mRenderer = MyGLRenderer()
         setRenderer(mRenderer)
-        renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+        renderMode = RENDERMODE_WHEN_DIRTY
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
-        Logger.getLogger("MyGLSurfaceView").info("${e.action}, ${e.x}, ${e.y}")
         when (e.action) {
             MotionEvent.ACTION_UP -> {
+                Logger.getLogger("MyGLSurfaceView.onTouchEvent").info("ACTION_UP, ${e.x}, ${e.y}")
                 mPreviousX = 0f
                 mPreviousY = 0f
             }
             MotionEvent.ACTION_MOVE -> {
+                Logger.getLogger("MyGLSurfaceView.onTouchEvent").info("ACTION_MOVE, ${e.x}, ${e.y}")
                 if (mPreviousY != 0f || mPreviousY != 0f) {
-                    var dx = Math.abs(e.x - mPreviousX)
-                    var dy = Math.abs(e.y - mPreviousY)
+                    var dx = abs(e.x - mPreviousX)
+                    var dy = abs(e.y - mPreviousY)
                     dx = if (e.y > height / 2) {
                         dx * -1
                     } else dx
                     dy = if (e.x < width / 2) {
                         dy * -1
                     } else dy
-                    mRenderer.mAngle += (dx + dy) * TOUCH_SCALE_FACTOR // 180.0f / 320
+                    val angle = mRenderer.getAngle() + (dx + dy) * TOUCH_SCALE_FACTOR
+                    mRenderer.setAngle(angle = angle)
                     requestRender()
                 }
                 mPreviousX = e.x
@@ -53,7 +55,7 @@ class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
     override fun setRenderer(renderer: Renderer?) {
         super.setRenderer(renderer)
         this.mRenderer = renderer as MyGLRenderer
-        Logger.getLogger("MyGLSurfaceView").info("setRenderer $renderer")
+        Logger.getLogger("MyGLSurfaceView.setRender").info("setRenderer $renderer")
     }
 
     fun changeShape(shapeType: Int) {

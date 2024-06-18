@@ -2,6 +2,7 @@
     <string name="app_name">SimpsonGLTest01</string>
     <string name="exit">Exit</string>
     <string name="change">Change</string>
-    <string name="reset_pos">Reset Position</string>
-    <string name="cubemode">Cube Mode</string>
+    <string name="reset_pos">Reset</string>
+    <string name="cube1mode">Cube1</string>
+    <string name="cube3mode">Cube3</string>
 </resources>
