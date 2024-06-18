@@ -37,11 +37,17 @@ class CubeV2: ShapeBase(shapeType = ShapeType.Cube2, coordsPerVertex = 3, mulVal
         Logger.getLogger("CubeV2.init").info("mProgram = ${super.getProgramHandle()}")
     }
 
-    override fun drawCustom(vertexCount: Int, cnt: Int) {
-        Logger.getLogger("CubeV2.drawCustom").info("$vertexCount, $cnt, ${cnt*orderStepByColor}")
-        orderByte.position(cnt * orderStepByColor)
-        Logger.getLogger("CubeV2.drawCustom").info("$vertexCount, $cnt, $orderByte")
+    override fun drawCustom(colorHandle: Int, vertexCount: Int) {
 
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, orderStepByColor, GLES20.GL_UNSIGNED_BYTE, orderByte)
+        var cnt = 0
+        // 색상 설정
+        super.mColors.forEach {
+            GLES20.glUniform4fv(colorHandle, 1, it, 0)
+            Logger.getLogger("CubeV2.drawCustom").info("$vertexCount, $cnt, ${cnt*orderStepByColor}")
+            orderByte.position(cnt * orderStepByColor)
+            Logger.getLogger("CubeV2.drawCustom").info("$vertexCount, $cnt, $orderByte")
+            GLES20.glDrawElements(GLES20.GL_TRIANGLES, orderStepByColor, GLES20.GL_UNSIGNED_BYTE, orderByte)
+            cnt++
+        }
     }
 }

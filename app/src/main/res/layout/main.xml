@@ -40,6 +40,16 @@
             android:layout_height="wrap_content"
             android:text="@string/reset_pos" />
     </LinearLayout>
+
+    <EditText
+        android:enabled="false"
+        android:id="@+id/classNameView"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="0dp"
+        android:textAlignment="center"
+        android:textColor="@color/purple_500"
+        android:textSize="20dp" />
     <RelativeLayout
         android:id="@+id/layout1"
         android:tag="trueLayout"

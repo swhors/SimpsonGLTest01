@@ -26,52 +26,8 @@ class ShapeCoords {
                         -0.5f, 0.5f, // 0
                         0.5f, -0.5f, // 2
                         0.5f, 0.5f) // 3
-                ShapeType.Cube ->
-                    floatArrayOf(
-                        -defaultSize,  defaultSize, defaultSize, // 0
-                         defaultSize,  defaultSize,  defaultSize, // 1
-                         defaultSize, -defaultSize,  defaultSize, // 2
-                        -defaultSize, -defaultSize,  defaultSize, // 3
-                        -defaultSize, -defaultSize, -defaultSize, // 4
-                        -defaultSize,  defaultSize, -defaultSize, // 5
-                         defaultSize,  defaultSize, -defaultSize, // 6
-                         defaultSize, -defaultSize, -defaultSize) // 7
                 ShapeType.Cube2 ->
-                    floatArrayOf( // Vertices of the 6 faces
-                        // FRONT
-//                        -0.5f, 0.5f, 0.0f,  // 0. left-bottom-front
-//                        -0.5f, -0.5f, 0.0f,  // 1. right-bottom-front
-//                        0.5f, -0.5f, 0.0f,  // 2. left-top-front
-//                        0.5f, 0.5f, 0.0f,  // 3. right-top-front
-//                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
-//                        1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
-//                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
-//                        1.0f, 1.0f, 1.0f,  // 3. right-top-front
-//                        // BACK
-//                        1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
-//                        -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
-//                        1.0f, 1.0f, -1.0f,  // 7. right-top-back
-//                        -1.0f, 1.0f, -1.0f,  // 5. left-top-back
-//                        // LEFT
-//                        -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
-//                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
-//                        -1.0f, 1.0f, -1.0f,  // 5. left-top-back
-//                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
-//                        // RIGHT
-//                        1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
-//                        1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
-//                        1.0f, 1.0f, 1.0f,  // 3. right-top-front
-//                        1.0f, 1.0f, -1.0f,  // 7. right-top-back
-//                        // TOP
-//                        -1.0f, 1.0f, 1.0f,  // 2. left-top-front
-//                        1.0f, 1.0f, 1.0f,  // 3. right-top-front
-//                        -1.0f, 1.0f, -1.0f,  // 5. left-top-back
-//                        1.0f, 1.0f, -1.0f,  // 7. right-top-back
-//                        // BOTTOM
-//                        -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
-//                        1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
-//                        -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
-//                        1.0f, -1.0f, 1.0f // 1. right-bottom-front
+                    floatArrayOf(
                         -defaultSize,  defaultSize,  defaultSize, // 0
                          defaultSize,  defaultSize,  defaultSize, // 1
                          defaultSize, -defaultSize,  defaultSize, // 2
@@ -81,7 +37,7 @@ class ShapeCoords {
                          defaultSize, -defaultSize, -defaultSize, // 6
                         -defaultSize, -defaultSize, -defaultSize // 7
                     )
-                ShapeType.Cube3 -> {
+                ShapeType.Cube, ShapeType.Cube3 -> {
                     floatArrayOf(
                         ////////////////////////////////////////////////////////////////////
                         // FRONT

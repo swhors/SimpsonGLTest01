@@ -30,6 +30,7 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
     fun setAngle(angle: Float) = run { this.mAngle = angle }
 
     var mColors: Array<FloatArray> = emptyArray()
+    fun getColorFirst(): FloatArray? = (mColors.size>0).let { mColors[0] }
 
     init {
         Logger.getLogger("ShapeBase.init").info("ShapeBase.init -- start $shapeType")
@@ -86,17 +87,14 @@ abstract class ShapeBase(shapeType: ShapeType, coordsPerVertex: Int, mulValue: I
         GLES20.glDisableVertexAttribArray(mPositionHandle)
     }
 
-    internal abstract fun drawCustom(vertexCount: Int, cnt: Int)
+    open fun drawCustom(colorHandle: Int, vertexCount: Int) {
+        /* do nothing */
+    }
 
     open fun draw(mvpMatrix: FloatArray) {
         Logger.getLogger("ShapeBase.draw").info("ShapeType = $mShapeType")
         val colorHandle = drawFirst(mvpMatrix = mvpMatrix)
-        var cnt = 0
-        // 색상 설정
-        mColors.forEach {
-            GLES20.glUniform4fv(colorHandle, 1, it, 0)
-            drawCustom(this.vertexCount, cnt++)
-        }
+        drawCustom(colorHandle = colorHandle, vertexCount = vertexCount)
         drawEnd()
     }
 }

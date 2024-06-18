@@ -11,8 +11,8 @@ class Triangle: ShapeBase(shapeType = ShapeType.Triangle, coordsPerVertex = 3, m
         Logger.getLogger("Triangle.init").info("Triangle.init -- end")
     }
 
-    override fun drawCustom(vertexCount: Int, cnt: Int) {
-        //vertex 갯수만큼 tiangle을 렌더링한다.
+    override fun drawCustom(colorHandle: Int, vertexCount: Int) {
+        GLES20.glUniform4fv(colorHandle, 1, super.getColorFirst()!!, 0)
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount)
     }
 }

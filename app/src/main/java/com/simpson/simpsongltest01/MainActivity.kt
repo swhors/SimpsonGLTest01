@@ -6,7 +6,9 @@ import android.content.pm.ConfigurationInfo
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 
 
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
             if (this.currentViewMode != 0) {
                 this.currentViewMode = 0
                 attacheShapeView(this.currentViewMode)
+                setClassNameByType(if(currentGlView == 0){6} else currentGlView)
             } else {
                 if (++currentGlView == 5) {
                     changeGLView(6)
@@ -40,6 +43,8 @@ class MainActivity : ComponentActivity() {
                 glView.requestRender()
             }
         }
+
+        setClassNameByType(currentGlView)
 
         findViewById<Button>(R.id.okBtn).setOnClickListener{
             finishAndRemoveTask()
@@ -54,6 +59,7 @@ class MainActivity : ComponentActivity() {
             if (this.currentViewMode != 1) {
                 this.currentViewMode = 1
                 attacheShapeView(this.currentViewMode)
+                setClassName("CubeV1")
             }
         }
 
@@ -61,6 +67,7 @@ class MainActivity : ComponentActivity() {
             if (this.currentViewMode != 2) {
                 this.currentViewMode = 2
                 attacheShapeView(this.currentViewMode)
+                setClassName("CubeV3")
             }
         }
 
@@ -72,6 +79,22 @@ class MainActivity : ComponentActivity() {
 
         attacheShapeView(viewMode = this.currentViewMode)
         glView.changeShape(this.currentGlView)
+    }
+
+    private fun setClassName(className: String) {
+        val classNameArray = className.toCharArray()
+        findViewById<EditText>(R.id.classNameView).setText(classNameArray, 0, classNameArray.size)
+    }
+    private fun setClassNameByType(viewType: Int) {
+        var className = when(viewType) {
+            1 -> "Triangle"
+            2 -> "QuadV1"
+            3 -> "QuadV2"
+            4 -> "Circle"
+            6 -> "CubeV2"
+            else -> "None"
+        }.toCharArray()
+        findViewById<EditText>(R.id.classNameView).setText(className, 0, className.size)
     }
 
     private fun attacheShapeView(viewMode: Int) {
@@ -99,6 +122,7 @@ class MainActivity : ComponentActivity() {
 
     private fun changeGLView(viewType: Int) {
         this.glView.changeShape(viewType)
+        setClassNameByType(viewType)
     }
 
     private fun detectOpenGLES30(): Boolean {
@@ -107,19 +131,3 @@ class MainActivity : ComponentActivity() {
         return (info.reqGlEsVersion >= 0x30000)
     }
 }
-
-//@Composable
-//fun Greeting(name: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "Hello $name!",
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    SimpsonGLTest01Theme {
-//        Greeting("Android")
-//    }
-//}

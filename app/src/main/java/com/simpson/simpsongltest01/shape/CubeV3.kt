@@ -37,23 +37,21 @@ class CubeV3: ShapeBase(shapeType = ShapeType.Cube3, coordsPerVertex = 3, mulVal
 
     override fun draw(mvpMatrix: FloatArray) {
         // Use the program object
-//        Logger.getLogger("Cube3.draw").info("draw 01")
         GLES20.glUseProgram(super.getProgramHandle())
 
         // get handle to shape's transformation matrix
         mMVPMatrixHandle = GLES20.glGetUniformLocation(super.getProgramHandle(), "uMVPMatrix")
         ShapeOpenGLUtil.checkGlError("glGetUniformLocation")
+        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0)
+        ShapeOpenGLUtil.checkGlError("glUniformMatrix4fv")
 
         // get handle to fragment shader's vColor member
         mColorHandle = GLES20.glGetUniformLocation(super.getProgramHandle(), "vColor")
         ShapeOpenGLUtil.checkGlError("glGetUniformLocation")
 
         // Apply the projection and view transformation
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0)
-        ShapeOpenGLUtil.checkGlError("glUniformMatrix4fv")
 
         val vertexBuffer = super.getVertexBuffer()
-
         vertexBuffer.position(vertexPosIndex) //just in case. We did it already though.
 
         //add all the points to the space, so they can be correct by the transformations.
@@ -93,9 +91,5 @@ class CubeV3: ShapeBase(shapeType = ShapeType.Cube3, coordsPerVertex = 3, mulVal
         GLES20.glUniform4fv(mColorHandle, 1, colorYellow, 0)
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, startPos, verticesPerface)
         //last face, so no need to increment.
-    }
-
-    override fun drawCustom(vertexCount: Int, cnt: Int) {
-        /* PASS */
     }
 }

@@ -15,14 +15,6 @@ class CubeV1: ShapeBase(shapeType = ShapeType.Cube, coordsPerVertex = 3, mulValu
 
     private var mColorBuffer: FloatBuffer? = null
     private var mIndexBuffer: ByteBuffer? = null
-//    private var mProgram = 0
-//    private var mPositionHandle = 0
-
-    override fun drawCustom(vertexCount: Int, cnt: Int) {
-        /* Do Nothing */
-    }
-
-    private var mColorHandle = 0
 
     companion object {
         /** Vertex colors.  */
@@ -97,7 +89,7 @@ class CubeV1: ShapeBase(shapeType = ShapeType.Cube, coordsPerVertex = 3, mulValu
             super.getVertexBuffer())
 
         // Prepare the cube color data.
-        mColorHandle = glGetUniformLocation(super.getProgramHandle(), "vColor")
+        var mColorHandle = glGetUniformLocation(super.getProgramHandle(), "vColor")
         Log.i("CubeV1.draw", "mColorHandle = $mColorHandle")
         GLES20.glEnableVertexAttribArray(mColorHandle)
         GLES20.glVertexAttribPointer(

@@ -20,8 +20,9 @@ class QuadV1: ShapeBase(shapeType = ShapeType.QuadV1, coordsPerVertex = 2, mulVa
         orderStepByColor = orderByte.capacity() / mColors.size
     }
 
-    override fun drawCustom(vertexCount: Int, cnt: Int) {
-        orderByte.position(cnt * this.orderStepByColor)
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, orderStepByColor, GLES20.GL_UNSIGNED_BYTE, orderByte)
+    override fun drawCustom(colorHandle: Int, vertexCount: Int) {
+        GLES20.glUniform4fv(colorHandle, 1, super.mColors[0], 0)
+        orderByte.position(0)
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, orderByte.capacity(), GLES20.GL_UNSIGNED_BYTE, orderByte)
     }
 }
